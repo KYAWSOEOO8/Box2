@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPN Guide Toggle</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f4; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        
+        .box-container { display: flex; gap: 15px; margin-bottom: 20px; }
+        
+        /* Box ပုံစံ */
+        .btn { 
+            padding: 15px 25px; 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn.active { background: #dc3545; } /* ဖွင့်ထားရင် အနီရောင်ပြောင်းမယ် */
+
+        /* Guide Section */
+        #guide-section { width: 100%; max-width: 400px; display: none; }
+        .main-title { font-size: 26px; font-weight: bold; text-align: center; margin: 20px 0; color: #333; }
+        
+        .step-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .step-header { font-weight: bold; font-size: 18px; margin-bottom: 10px; color: #333; }
+        .step-card img { width: 100%; border-radius: 8px; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="box-container">
+        <button id="btn1" class="btn" onclick="toggleGuide(1, 2)">Box 1</button>
+        <button id="btn2" class="btn" onclick="toggleGuide(2, 6)">Box 2</button>
+    </div>
+
+    <div id="guide-section">
+        <div class="main-title">123456</div>
+        <div id="content-list"></div>
+    </div>
+
+    <script>
+        // လက်ရှိ ဘယ် Box ပွင့်နေလဲဆိုတာ မှတ်ထားဖို့
+        let currentOpenBox = null;
+
+        const myImages = [
+            { title: "၁။ VPN အရင်ဖွင့်ပါ", url: "https://via.placeholder.com/400x250?text=Step+1" },
+            { title: "၂။ ဒါကို နှိပ်ပါ", url: "https://via.placeholder.com/400x250?text=Step+2" },
+            { title: "၃။ ဆာဗာရွေးပါ", url: "https://via.placeholder.com/400x250?text=Step+3" },
+            { title: "၄။ ချိတ်ဆက်မှုကို စောင့်ပါ", url: "https://via.placeholder.com/400x250?text=Step+4" },
+            { title: "၅။ အောင်မြင်ပါပြီ", url: "https://via.placeholder.com/400x250?text=Step+5" },
+            { title: "၆။ အသုံးပြုနိုင်ပါပြီ", url: "https://via.placeholder.com/400x250?text=Step+6" }
+        ];
+
+        function toggleGuide(boxNum, count) {
+            const section = document.getElementById('guide-section');
+            const list = document.getElementById('content-list');
+            const btn1 = document.getElementById('btn1');
+            const btn2 = document.getElementById('btn2');
+
+            // အကယ်၍ ဖွင့်ထားတဲ့ Box ကိုပဲ ထပ်နှိပ်ရင် ပိတ်လိုက်မယ် (မူလအတိုင်းပြန်ဖြစ်မယ်)
+            if (currentOpenBox === boxNum) {
+                section.style.display = 'none';
+                currentOpenBox = null;
+                btn1.classList.remove('active');
+                btn2.classList.remove('active');
+                return;
+            }
+
+            // Box အသစ်ဖွင့်ခြင်း
+            currentOpenBox = boxNum;
+            section.style.display = 'block';
+            list.innerHTML = ''; 
+
+            // ခလုတ်အရောင် ပြောင်းလဲခြင်း
+            btn1.classList.toggle('active', boxNum === 1);
+            btn2.classList.toggle('active', boxNum === 2);
+
+            for (let i = 0; i < count; i++) {
+                const item = myImages[i];
+                const card = document.createElement('div');
+                card.className = 'step-card';
+                card.innerHTML = `
+                    <div class="step-header">${item.title}</div>
+                    <img src="${item.url}" alt="Step">
+                `;
+                list.appendChild(card);
+            }
+        }
+    </script>
+
+</body>
+</html>
