@@ -1,97 +1,203 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VPN Guide Toggle</title>
+    <title>KSO VPN Guide</title>
     <style>
-        body { font-family: sans-serif; background-color: #f4f4f4; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        
-        .box-container { display: flex; gap: 15px; margin-bottom: 20px; }
-        
-        /* Box ပုံစံ */
-        .btn { 
-            padding: 15px 25px; 
-            background: #007bff; 
-            color: white; 
-            border: none; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-weight: bold;
-            transition: 0.3s;
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .btn.active { background: #dc3545; } /* ဖွင့်ထားရင် အနီရောင်ပြောင်းမယ် */
 
-        /* Guide Section */
-        #guide-section { width: 100%; max-width: 400px; display: none; }
-        .main-title { font-size: 26px; font-weight: bold; text-align: center; margin: 20px 0; color: #333; }
-        
-        .step-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .step-header { font-weight: bold; font-size: 18px; margin-bottom: 10px; color: #333; }
-        .step-card img { width: 100%; border-radius: 8px; display: block; }
+        /* Header Section */
+        .app-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .app-header h1 {
+            font-size: 45px;
+            color: #1a73e8;
+            margin: 0;
+            font-weight: 900;
+        }
+
+        /* အသုံးပြုနည်းကြည့်ရန် စာသား (ခေါင်းစဉ်အောက်) */
+        .instruction-text {
+            color: #d93025;
+            font-size: 24px;
+            font-weight: 800;
+            margin-top: 5px;
+            background: #fff0f0;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 2px solid #ffcfcf;
+        }
+
+        /* Box Buttons */
+        .box-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+            margin: 25px 0;
+        }
+
+        .nav-card {
+            background: white;
+            padding: 20px 10px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            font-weight: bold;
+            border: 2px solid transparent;
+        }
+
+        .nav-card.active {
+            border-color: #1a73e8;
+            background-color: #e8f0fe;
+        }
+
+        /* Guide Content */
+        #guide-display {
+            width: 100%;
+            max-width: 450px;
+            display: none;
+        }
+
+        .step-label {
+            font-size: 30px;
+            font-weight: 900;
+            color: #202124;
+            margin: 30px 0 10px 0;
+            text-align: center;
+        }
+
+        .img-card {
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .img-card img {
+            width: 100%;
+            border-radius: 10px;
+            display: block;
+        }
+
+        /* သတိပေးချက် Box */
+        .warning-box {
+            width: 100%;
+            max-width: 360px;
+            background-color: #fff4e5;
+            border-left: 6px solid #ffa000;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #663c00;
+        }
+
+        .warning-box b {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 5px;
+            color: #e65100;
+        }
     </style>
 </head>
 <body>
 
-    <div class="box-container">
-        <button id="btn1" class="btn" onclick="toggleGuide(1, 2)">Box 1</button>
-        <button id="btn2" class="btn" onclick="toggleGuide(2, 6)">Box 2</button>
+    <div class="app-header">
+        <h1>KSO VPN</h1>
+        <div class="instruction-text">အသုံးပြုနည်းကြည့်ရန် ခလုတ်ကိုနှိပ်ပါ</div>
     </div>
 
-    <div id="guide-section">
-        <div class="main-title">123456</div>
-        <div id="content-list"></div>
+    <div class="box-wrapper">
+        <div id="box1" class="nav-card" onclick="openGuide(1)">
+            <div style="font-size: 30px; margin-bottom: 8px;">🆔</div>
+            VIP ID ပို့နည်း
+        </div>
+        <div id="box2" class="nav-card" onclick="openGuide(2)">
+            <div style="font-size: 30px; margin-bottom: 8px;">🔌</div>
+            VPN ချိတ်နည်း
+        </div>
+    </div>
+
+    <div id="guide-display"></div>
+
+    <div class="warning-box">
+        <b>⚠️ သတိပေးချက်</b>
+        လမ်းညွှန်ချက်များကို သေချာစွာဖတ်ပါ။ အကယ်၍ အဆင်မပြေပါက Admin ကို တိုက်ရိုက်ဆက်သွယ်မေးမြန်းနိုင်ပါသည်။
     </div>
 
     <script>
-        // လက်ရှိ ဘယ် Box ပွင့်နေလဲဆိုတာ မှတ်ထားဖို့
-        let currentOpenBox = null;
+        let activeBox = null;
 
-        const myImages = [
-            { title: "၁။ VPN အရင်ဖွင့်ပါ", url: "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip1.jpg" },
-            { title: "၂။ ဒါကို နှိပ်ပါ", url: "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip2.jpg" },
-            { title: "၃။ ဆာဗာရွေးပါ", url: "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip3.jpg" },
-            { title: "၄။ ချိတ်ဆက်မှုကို စောင့်ပါ", url: "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip4.jpg" },
-            { title: "၅။ အောင်မြင်ပါပြီ", url: "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip5.jpg" },
-            { title: "၆။ အသုံးပြုနိုင်ပါပြီ", url: "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip6.jpg" }
-            { title: "၇။ အသုံးပြုနိုင်ပါပြီ", url: "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip7.jpg" }
-        ];
-        ];
+        const data = {
+            box1: {
+                title: "VIP ID ပို့နည်း အဆင့် ",
+                images: [
+                    "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip1.jpg",
+                    "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip2.jpg"
+                ]
+            },
+            box2: {
+                title: "VPN ချိတ်နည်း အဆင့် ",
+                images: [
+                    "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip3.jpg",
+                    "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip4.jpg",
+                    "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip5.jpg",
+                    "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip6.jpg",
+                    "https://raw.githubusercontent.com/KYAWSOEOO8/Box2/refs/heads/main/vip7.jpg"
+                ]
+            }
+        };
 
-        function toggleGuide(boxNum, count) {
-            const section = document.getElementById('guide-section');
-            const list = document.getElementById('content-list');
-            const btn1 = document.getElementById('btn1');
-            const btn2 = document.getElementById('btn2');
+        function openGuide(num) {
+            const display = document.getElementById('guide-display');
+            const b1 = document.getElementById('box1');
+            const b2 = document.getElementById('box2');
 
-            // အကယ်၍ ဖွင့်ထားတဲ့ Box ကိုပဲ ထပ်နှိပ်ရင် ပိတ်လိုက်မယ် (မူလအတိုင်းပြန်ဖြစ်မယ်)
-            if (currentOpenBox === boxNum) {
-                section.style.display = 'none';
-                currentOpenBox = null;
-                btn1.classList.remove('active');
-                btn2.classList.remove('active');
+            if (activeBox === num) {
+                display.style.display = 'none';
+                activeBox = null;
+                b1.classList.remove('active');
+                b2.classList.remove('active');
                 return;
             }
 
-            // Box အသစ်ဖွင့်ခြင်း
-            currentOpenBox = boxNum;
-            section.style.display = 'block';
-            list.innerHTML = ''; 
+            activeBox = num;
+            display.style.display = 'block';
+            display.innerHTML = '';
 
-            // ခလုတ်အရောင် ပြောင်းလဲခြင်း
-            btn1.classList.toggle('active', boxNum === 1);
-            btn2.classList.toggle('active', boxNum === 2);
+            b1.classList.toggle('active', num === 1);
+            b2.classList.toggle('active', num === 2);
 
-            for (let i = 0; i < count; i++) {
-                const item = myImages[i];
-                const card = document.createElement('div');
-                card.className = 'step-card';
-                card.innerHTML = `
-                    <div class="step-header">${item.title}</div>
-                    <img src="${item.url}" alt="Step">
+            const selected = data['box' + num];
+
+            selected.images.forEach((url, i) => {
+                const item = document.createElement('div');
+                item.style.marginBottom = "40px";
+                item.innerHTML = `
+                    <div class="step-label">${selected.title} ${i + 1}</div>
+                    <div class="img-card">
+                        <img src="${url}" alt="Step">
+                    </div>
                 `;
-                list.appendChild(card);
-            }
+                display.appendChild(item);
+            });
+
+            window.scrollTo({ top: 250, behavior: 'smooth' });
         }
     </script>
 
